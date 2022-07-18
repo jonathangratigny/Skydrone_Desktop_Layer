@@ -1,0 +1,24 @@
+.productCarousel {
+    margin-inline: auto;
+    width: clamp(100px, 200px, 100%);
+}
+
+.productCarousel img {
+    width: 200px;
+    object-fit: contain;
+}
+
+.container-images {
+
+    .card-images {
+
+        img {
+            width: 100%;
+        }
+    }
+}
+
+.image-preview {
+    width: 150px;
+    object-fit: contain;
+}
