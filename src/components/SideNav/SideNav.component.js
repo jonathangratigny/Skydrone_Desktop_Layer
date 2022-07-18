@@ -1,7 +1,8 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import './SideNav.scss'
 import { UserContext } from '../user/UserContext'
 import { Link } from 'react-router-dom'
+
 
 export default function SideNav () {
     const {user, setUser} = useContext(UserContext)
@@ -10,6 +11,23 @@ export default function SideNav () {
         localStorage.clear()
         setUser(null)
     }
+
+    const [ page, setPage ] = useState('home')
+
+    const checkPage = (page) => {
+        if ( page.test(window.location.href) ) return 'active'
+        else return ''
+    }
+
+    const url = window.location.pathname.split('/').pop();
+    //TODO: add a check for the page to be active when the user is on the same page and not rerendering the page
+
+    useEffect(() => {
+        setPage(window.location.href)
+        console.log(page);
+    }
+    , [url])
+
 
     
   return (

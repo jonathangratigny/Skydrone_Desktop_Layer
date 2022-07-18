@@ -125,8 +125,11 @@ export default function DronePage() {
     
   return (
     <>
+    <h1>Produit</h1>
     <div className="row mt-3">
+        
         <form className="col-8" onSubmit={handleSubmit} >
+            <h2>Informations</h2>
             <div className="card p-4" >
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Titre</label>
@@ -158,6 +161,7 @@ export default function DronePage() {
             </div>
         </form>
         <div className="col-4">
+            <h2>Aperçu</h2>
             <div className="card">
                 <div className="productCarousel" >
                 <AliceCarousel

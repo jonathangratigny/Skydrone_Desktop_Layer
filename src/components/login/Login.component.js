@@ -9,6 +9,14 @@ export default function Login() {
 
     const {user, setUser} = useContext(UserContext)
 
+    function CheckError(response) {
+        if (response.status >= 200 && response.status <= 299) {
+          return response.json();
+        } else {
+          throw Error(response.statusText);
+        }
+      }
+    //TODO - add error handling in the api response
     const handleLogin = () => {
         fetch(`${baseUrl}/login`,{
             method:'post',
@@ -17,14 +25,14 @@ export default function Login() {
                 'Content-Type':'application/json'
             }
         })
-        .then(result => result.json())
+        .then(CheckError)
         .then(result => {
-            localStorage.setItem('user', JSON.stringify(result))
+            let json = JSON.stringify(result)
+            localStorage.setItem('user', json)
             setUser(result)
         })
+        .catch(err => console.log(err))
     }
-
-
 
   return (
     <div className="w-100">
