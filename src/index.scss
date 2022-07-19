@@ -5,4 +5,13 @@ body {
 
 #root {
     display: flex;
+    max-height: 100vh;
+
+}
+
+.listContainer {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 80vh;
+
 }

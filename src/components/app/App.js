@@ -3,8 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'jquery/dist/jquery.min.js'
 import 'bootstrap/dist/js/bootstrap.min.js'
-/* import Navbar from './components/Navbar';
-import Footer from './components/Footer'; */
 import SideNav from '../SideNav/SideNav.component'
 import Home from '../home/Home.component'
 import Login from '../login/Login.component'
@@ -12,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { UserContext } from '../user/UserContext'
 import DronePage from '../drone/DronePage'
 import DronesList from '../drone/DronesList'
+import OrderList from '../order/OrderList.js'
 
 
 const App = () => {
@@ -31,6 +30,7 @@ const App = () => {
                   <Route path='/' exact element={<Home />}></Route>
                   <Route path='/products' exact element={<DronesList />}></Route>
                   <Route path='/product/:id' exact element={<DronePage />}></Route>
+                  <Route path='/orders' exact element={<OrderList />}></Route>
                 </Routes>
               </main>
             </>

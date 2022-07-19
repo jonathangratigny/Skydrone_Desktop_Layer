@@ -21,7 +21,8 @@
     "react-scripts": "5.0.1",
     "sass": "^1.52.1",
     "wait-on": "^6.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack-dev-middleware": "^5.3.3"
   },
   "main": "public/main.js",
   "homepage": "./",
