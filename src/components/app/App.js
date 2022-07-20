@@ -11,6 +11,7 @@ import { UserContext } from '../user/UserContext'
 import DronePage from '../drone/DronePage'
 import DronesList from '../drone/DronesList'
 import OrderList from '../order/OrderList.js'
+import OrderPage from '../order/OrderPage.js'
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
                   <Route path='/products' exact element={<DronesList />}></Route>
                   <Route path='/product/:id' exact element={<DronePage />}></Route>
                   <Route path='/orders' exact element={<OrderList />}></Route>
+                  <Route path='/order/:id' exact element={<OrderPage />}></Route>
                 </Routes>
               </main>
             </>

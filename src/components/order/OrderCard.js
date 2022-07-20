@@ -27,15 +27,6 @@ export default function DroneCard({order}) {
     const [customer, setCustomer] = useState({})
     const [load, setLoad] = useState(true)
     useEffect (() => {
- /*        fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + order.drone_id)
-        .then(response => response.json())
-        .then(data => {
-            const firstImage = data[0]
-            let url = `data:image/png;base64,${toBase64(firstImage.img.data)}`
-            setImage(url)
-            setLoad(false)
-            })
- */
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + order.drone_id)
         .then(response => response.json())
         .then(data => {
@@ -49,12 +40,11 @@ export default function DroneCard({order}) {
         })
         .then(response => response.json())
         .then(data => {
-            setCustomer(data)
+            setCustomer(data.user)
             })
         }
     , [])
     
-
     return (
         <div className="card mb-2">
             <h5 className="card-header">Créer le {displayDate(order.createdAt)} à {displayTime(order.createdAt)}</h5>
@@ -63,7 +53,7 @@ export default function DroneCard({order}) {
                     <div className='row'>
                         <div className='col'>
                             <h5 className="card-title">{order.state_o}</h5>
-                            <p className="card-text">{drone.name_d}</p>
+                            <p className="card-text">{customer.firstName_u} {customer.lastName_u}</p>
                         </div>
                         <div className='col'>
                             <h5 className="card-title">Du {displayDate(order.startAt_o)} au { displayDate(order.endAt_o)}</h5>
