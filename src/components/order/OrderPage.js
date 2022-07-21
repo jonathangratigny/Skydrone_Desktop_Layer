@@ -2,11 +2,6 @@ import React, {useEffect, useState, useContext} from 'react'
 import { UserContext } from '../user/UserContext'
 import { useParams } from "react-router-dom"
 
-const displayDate = (date) => {
-    return new Date(date).toLocaleDateString('sv');
-}
-
-const stateName = ['En attente de validation', 'Acceptée', 'Rejetée', 'En cours' , 'Terminée']
 
 
 
@@ -16,19 +11,31 @@ export default function OrderPage() {
     const {user} = useContext(UserContext)
     const [ order, setOrder ] = useState({})
     const { id } = useParams()
+    const [ totalPrice, setTotalPrice ] = useState(0)
+    // Fill input
+    const [orderValue, setOrderValue] = useState(null)
+    const [infoValue, setInfoValue] = useState(null)
 
-    useEffect(() => {
-        console.log('testsssssssssss');
 
-        fetch('https://skydrone-api.herokuapp.com/api/v1/orders/' + id, {
+    const displayDate = (date) => {
+        return new Date(date).toLocaleDateString('sv');
+    }
+    
+    const stateName = ['En attente de validation', 'Acceptée', 'Rejetée', 'En cours' , 'Terminée']
+
+    const fetchData = async () => {
+        const response = await fetch('https://skydrone-api.herokuapp.com/api/v1/orders/' + id, {
+            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            setOrderValue(data.order)
-            })
+        const data = await response.json();
+        setOrderValue(data.order)
+    }
+    
+    useEffect(() => {
+        fetchData()
         
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones')
         .then(response => response.json())
@@ -38,9 +45,7 @@ export default function OrderPage() {
     }
     , [])
 
-    // Fill input
-    const [orderValue, setOrderValue] = useState({})
-    const [infoValue, setInfoValue] = useState({})
+
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -64,14 +69,8 @@ export default function OrderPage() {
         return diff / (1000 * 60 * 60 * 24)
     }
     console.log('test');
-    console.log('testddddddddd');
 
- 
 
-    useEffect(() => {
-        console.log('ffffffffffffffff');
-    }
-    , [])
 
 
 
@@ -102,12 +101,11 @@ export default function OrderPage() {
         event.preventDefault(); */
     } 
 
-    const [ totalPrice, setTotalPrice ] = useState(0)
 
 
   return (
     <>
-    <h1>Réservation</h1>
+ {/*    <h1>Réservation</h1>
     <div className="row mt-3">
         <form className="col-8" onSubmit={handleSubmit} >
             <h2>Informations</h2>
@@ -116,7 +114,7 @@ export default function OrderPage() {
                     <label htmlFor="status" className="form-label">Status</label>
                     <div className="form-group">
                         <select className="form-select" id='state' name='state_o' aria-label="Default select example" onChange={ e => handleChange(e) } value={orderValue.state_o}>
-                        { stateName.map((state, key) => {
+                        { stateName && stateName.map((state, key) => {
                             return (
                         <option value={state} key={key}>{state}</option>
                             )
@@ -142,7 +140,7 @@ export default function OrderPage() {
                 <div className="mb-0">
                     <label htmlFor="drone" className="form-label">Drone</label>
                     <select className="form-select" name='drone_id' id='drone' aria-label="Default select example" onChange={e => handleChange(e)} value={drone._id}>
-                        { infoValue.allDrones.map((dro, key) => {
+                        { infoValue && infoValue.allDrones.map((dro, key) => {
                             return (
                         <option value={dro._id} key={key}>{dro.name_d}</option>
                             )
@@ -166,7 +164,7 @@ export default function OrderPage() {
         </div>
 
     </div>
-    
+     */}
     </>
   )
 }
