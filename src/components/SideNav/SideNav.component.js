@@ -64,7 +64,7 @@ export default function SideNav () {
                 </Link>
             </li>
             <li>
-                <Link to={'/'} className="nav-link text-white">
+                <Link to={'customers'} className="nav-link text-white">
                 <svg className="bi me-2" width="16" height="16"></svg>
                 Customers
                 </Link>

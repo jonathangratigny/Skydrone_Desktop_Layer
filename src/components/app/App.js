@@ -12,6 +12,8 @@ import DronePage from '../drone/DronePage'
 import DronesList from '../drone/DronesList'
 import OrderList from '../order/OrderList.js'
 import OrderPage from '../order/OrderPage.js'
+import CustomerList from '../customer/CustomerList.js'
+import CustomerPage from '../customer/CustomerPage.js'
 
 
 const App = () => {
@@ -33,6 +35,8 @@ const App = () => {
                   <Route path='/product/:id' exact element={<DronePage />}></Route>
                   <Route path='/orders' exact element={<OrderList />}></Route>
                   <Route path='/order/:id' exact element={<OrderPage />}></Route>
+                  <Route path='/customers' exact element={<CustomerList />}></Route>
+                  <Route path='/customer/:id' exact element={<CustomerPage />}></Route>
                 </Routes>
               </main>
             </>
