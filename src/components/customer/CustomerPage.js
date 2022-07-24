@@ -1,6 +1,9 @@
 import React, {useEffect, useState, useContext} from 'react'
 import { UserContext } from '../user/UserContext'
 import { useParams } from "react-router-dom"
+import OrderCard from '../order/OrderCard'
+import './Customer.scss'
+import {displayDate, displayTime} from '../../utils/dateFormat'
 
 export default function CustomerPage() {
     const { id } = useParams()
@@ -15,6 +18,19 @@ export default function CustomerPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        fetch('https://skydrone-api.herokuapp.com/api/v1/users/' + id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(data.customer)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+        }
+        )
     }
 
     useEffect(() => {
@@ -73,7 +89,6 @@ export default function CustomerPage() {
 
         setFetchData()
     }, [])
-    console.log(data);
 
     const handleChange = (event, type) => {
         const { name, value } = event.target
@@ -109,14 +124,21 @@ export default function CustomerPage() {
                 break;
         }
     }
+    const [category, setCategory] = useState('user')
+
 
     return (
         <>
        <h1>Utilisateur</h1>
         <div className="row mt-3">
-            <form className="col-8" onSubmit={handleSubmit} >
-                <h2>Informations</h2>
-                <div className="card p-4" >
+            <form className="col-12 " onSubmit={handleSubmit} >
+                <nav className='mb-3 '>
+                    <button type='button' className='btn' onClick={ e => setCategory('user')}>Informations</button>
+                    <button type='button' className='btn' onClick={ e => setCategory('company')}>Entreprise</button>
+                    <button type='button' className='btn' onClick={ e => setCategory('order')}>Réservations</button>
+                </nav>
+                {category === 'user' && (
+                <div className="card p-4" id='user'>
                     <div className="mb-3 d-flex">
                         <div className="me-3">
                             <label htmlFor="lastName" className="form-label">Nom</label>
@@ -139,17 +161,61 @@ export default function CustomerPage() {
                         </select>
                         </div>
                     </div>
-                </div>
-            </form>
-            <div className="col-4">
-                <h2>Infos</h2>
-                <div className="card p-4" >
                     <div className="mb-3">
-                        <label htmlFor="price" className="form-label">Prix totale</label>
-                        <input type="number" className="form-control" id="price" placeholder="Prix du produit"  disabled></input>
+                        <label htmlFor="address" className="form-label">Adresse</label>
+                        <input type="text" name='address_u' className="form-control" id="address" placeholder="Adresse" value={data.customer.address_u || ''} onChange={ e => handleChange(e, 'customer')}></input>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="phone" className="form-label">Téléphone</label>
+                        <input type="tel" name='phone_u' className="form-control" id="phone" placeholder="Adresse mail" value={data.customer.phone_u || ''} onChange={ e => handleChange(e, 'customer')}></input>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Adresse mail</label>
+                        <input type="text" name='email' className="form-control" id="email" placeholder="Adresse mail" value={data.customer.email || ''} onChange={ e => handleChange(e, 'customer')}></input>
+                    </div>
+                    
+                </div>
+                )}
+                {category === 'company' && (
+                <div className="card p-4" id='order'>
+                    <div className="mb-3">
+                        <label htmlFor="comanyName" className="form-label">Nom de l'entreprise</label>
+                        <input type="text" name='company_u' className="form-control" id="comanyName" placeholder="Nom de l'entreprise" value={data.customer.company_u || ''} onChange={ e => handleChange(e, 'customer')}></input>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="siret" className="form-label">Siret de l'entreprise</label>
+                        <input type="text" name='siret_u' className="form-control" id="siret" placeholder="Siret de l'entreprise" value={data.customer.siret_u || ''} onChange={ e => handleChange(e, 'customer')}></input>
                     </div>
                 </div>
-            </div>
+                )}
+                {category === 'order' && (
+                <div className="card p-4" id='order'>
+                    <div className="mb-3">
+                        <label className="form-label">Réservation</label>
+                        <div className='orderPreview' id='style-7'>
+                            <div className='listContainer'>
+                                {data.orders ? data.orders.map((order, key) =>
+                                (
+                                    < OrderCard order={order} key={key} />
+                                )) : (
+                                    <p>Aucune réservation</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                )}
+                <div className="my-3 d-flex justify-content-between">
+                    <div>
+                        <p>Création le {displayDate(data.customer.createdAt)} à {displayTime(data.customer.createdAt)}</p>
+                        <p>Dernière modification le {displayDate(data.customer.updatedAt)} à {displayTime(data.customer.updatedAt)}</p>
+                    </div>
+                    <div>
+                        <button type="submit" className="btn btn-primary" onClick={e => handleSubmit(e)}>Enregistrer</button>
+                    </div>
+                </div>
+            </form>
+         
     
         </div>
         </>

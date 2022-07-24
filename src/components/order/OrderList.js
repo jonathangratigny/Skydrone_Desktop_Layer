@@ -37,10 +37,12 @@ export default function OrderList() {
             <hr></hr>
         </div>
         <div className='col-12 listContainer'>
-            {orders.map((order, key) =>
+            {orders ? orders.map((order, key) =>
             (
                 < OrderCard order={order} key={key} />
-            ))}
+            )) : (
+                <p>Aucune réservation</p>
+            )}
         </div>
         < PriamryButton type='button' id='addOrder' />
     </div>

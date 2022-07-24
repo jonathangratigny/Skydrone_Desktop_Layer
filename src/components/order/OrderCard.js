@@ -27,7 +27,7 @@ export default function DroneCard({order}) {
     const [customer, setCustomer] = useState({})
     const [load, setLoad] = useState(true)
     useEffect (() => {
-        fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + order.drone_id)
+        fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + order.drone_id._id)
         .then(response => response.json())
         .then(data => {
             setDrone(data)
