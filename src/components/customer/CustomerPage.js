@@ -130,7 +130,7 @@ export default function CustomerPage() {
     return (
         <>
        <h1>Utilisateur</h1>
-        <div className="row mt-3">
+        <div className="row mt-2">
             <form className="col-12 " onSubmit={handleSubmit} >
                 <nav className='mb-3 '>
                     <button type='button' className='btn' onClick={ e => setCategory('user')}>Informations</button>

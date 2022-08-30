@@ -22,14 +22,14 @@ export default function CustomerList() {
 
     return (
         <div className='row g-3 customersList'>
-            <div className='col-12'>
-                <h2>Les utilisateurs</h2>
+            <div className='col-12 py-2'>
+                <h2>Utilisateurs</h2>
                 <hr></hr>
             </div>
             <div className='col-12 listContainer'>
                 {customers.map((customer, key) =>
                 (
-                    < CustomerCard customer={customer} key={key} />
+                    < CustomerCard customer={customer} key={key}/>
                 ))}
             </div>
             < PriamryButton type='button' id='addCustomer' text='+ Utilisateur' />

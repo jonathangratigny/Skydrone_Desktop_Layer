@@ -7,3 +7,16 @@ aside {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+.nav-link::after {
+    content: '';
+    display: block;
+    width: 0px;
+    height: 2px;
+    background: #0d6efd;
+    transition: 0.4s
+}
+
+.nav-link:hover::after {
+    width: 100%
+}

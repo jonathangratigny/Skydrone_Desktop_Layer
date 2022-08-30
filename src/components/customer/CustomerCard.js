@@ -17,18 +17,18 @@ export default function CustomerCard({customer}) {
     
 
     return (
-        <div className="card mb-2">
+        <div className="card my-4">
             <h5 className="card-header">Créer le {displayDate(customer.createdAt)} à {displayTime(customer.createdAt)}</h5>
             <div className="card-body row">
                 <div className='col-10'>
                     <div className='row'>
                         <div className='col'>
-                            <h5 className="card-title">titre</h5>
+                            <h5 className="card-title">Prénom et Nom</h5>
                             <p className="card-text">{customer.firstName_u} {customer.lastName_u}</p>
                         </div>
                         <div className='col'>
-                            <h5 className="card-title">titre</h5>
-                            <p className="card-text">text</p>
+                            <h5 className="card-title">Entreprise</h5>
+                            <p className="card-text">{customer.company_u}</p>
                         </div>
                     </div>
                 </div>

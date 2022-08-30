@@ -21,7 +21,7 @@ const displayTime = (date) => {
   
 
 export default function DroneCard({order}) {
-    const [image, setImage] = useState('')
+    // const [image, setImage] = useState('')
     const [drone, setDrone] = useState({})
     const {user} = useContext(UserContext)
     const [customer, setCustomer] = useState({})
@@ -44,16 +44,16 @@ export default function DroneCard({order}) {
             })
         }
     , [])
-    
+
     return (
-        <div className="card mb-2">
-            <h5 className="card-header">Créer le {displayDate(order.createdAt)} à {displayTime(order.createdAt)}</h5>
+        <div className="card my-2">
+            <h5 className="card-header">Crée le {displayDate(order.createdAt)} à {displayTime(order.createdAt)}</h5>
             <div className="card-body row">
                 <div className='col-10'>
                     <div className='row'>
                         <div className='col'>
-                            <h5 className="card-title">{order.state_o}</h5>
-                            <p className="card-text">{customer.firstName_u} {customer.lastName_u}</p>
+                            <h5 className="card-title">État : {order.state_o}</h5>
+                            <p className="card-text">Client : {customer.firstName_u} {customer.lastName_u}</p>
                         </div>
                         <div className='col'>
                             <h5 className="card-title">Du {displayDate(order.startAt_o)} au { displayDate(order.endAt_o)}</h5>
