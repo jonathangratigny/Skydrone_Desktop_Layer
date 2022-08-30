@@ -11,9 +11,11 @@
 .container-images {
 
     .card-images {
-
+        max-height: 120px;
         img {
             width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     }
 }
