@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import './DronesList.scss'
 import { Link } from 'react-router-dom'
 import DroneCard from './DroneCard'
+import PriamryButton from '../button/primaryButton'
+import {baseUrl} from '../../utils/globalVariables'
 
 const droneImage = async (id) => {
     fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id)
@@ -34,6 +36,11 @@ export default function DroneList() {
         (
             < DroneCard drone={drone} key={key} />
         ))}
+        <div className='col-12'>
+            <Link to={'../product/newDrone'} className="d-inline-block">
+                < PriamryButton type='button' id='addDrone' text='+ Drone' />
+            </Link>
+        </div>
     </div>
   )
 }

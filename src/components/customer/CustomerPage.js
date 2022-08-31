@@ -191,7 +191,6 @@ export default function CustomerPage() {
                 {category === 'order' && (
                 <div className="card p-4" id='order'>
                     <div className="mb-3">
-                        <label className="form-label">Réservation</label>
                         <div className='orderPreview' id='style-7'>
                             <div className='listContainer'>
                                 {data.orders ? data.orders.map((order, key) =>

@@ -1,0 +1,18 @@
+body {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#root {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 100vh;
+}
+
+.listContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 80vh;
+}
+/*# sourceMappingURL=index.css.map */

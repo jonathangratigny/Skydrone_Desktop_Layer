@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAC;EACF,KAAK,EAAE,KAAK;EACZ,OAAO,EAAE,IAAI;EACb,SAAS,EAAE,MAAM;EACjB,MAAM,EAAE,KAAK;EACb,UAAU,EAAE,KAAK;EACjB,UAAU,EAAE,IAAI;EAChB,UAAU,EAAE,MAAM;CACrB",
+    "sources": [
+        "../SideNav/SideNav.scss"
+    ],
+    "names": [],
+    "file": "SideNav.css"
+}
