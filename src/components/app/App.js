@@ -28,7 +28,7 @@ const App = () => {
             {!user ? <Login /> :
             <>
             <SideNav user={user} />
-              <main className='container-fluid'>
+              <main className='container-fluid my-2'>
                 <Routes>
                   <Route path='/' exact element={<Home />}></Route>
                   <Route path='/products' exact element={<DronesList />}></Route>

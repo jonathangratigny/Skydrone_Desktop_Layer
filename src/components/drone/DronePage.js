@@ -8,6 +8,7 @@ import { UserContext } from '../user/UserContext'
 import PriamryButton from '../button/primaryButton'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import OrderCard from '../order/OrderCard'
 
 
 
@@ -27,14 +28,16 @@ export default function DronePage() {
     const [load, setLoad] = useState(true)
     const [data, setData] = useState({
         drone: {},
-        images: []
+        images: [],
+        orders: []
     })
     const [image, setImage] = useState()
 
     useEffect (() => {
 
         let drone, 
-            images
+            images,
+            orders
         async function fetchData() {
             if (id) {
                 await fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + id)
@@ -60,6 +63,18 @@ export default function DronePage() {
                         });
                     
                     })
+
+                await fetch('https://skydrone-api.herokuapp.com/api/v1/orders', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + user.token},
+                    })
+                
+                    .then(res => res.json())
+                    .then(data => {
+                        orders = filterOrder(data)
+                    }) 
             }
         }
 
@@ -67,7 +82,8 @@ export default function DronePage() {
             await fetchData()
             setData({
                 drone: drone,
-                images: images
+                images: images,
+                orders: orders
             })
             data.images.forEach(element => {
                 imgArray.push(<img src={element} alt="presentation" />)
@@ -78,11 +94,42 @@ export default function DronePage() {
 
     }, [image])
 
+    const filterOrder = (orders) => {
+        let ordersFiltered = orders.filter(el => el.drone_id == id)
+        console.log(ordersFiltered);
+        return ordersFiltered
+    }
 
     
 
     const handleSubmitNew = (event) => {
         console.log('new drone');
+        const testToast = toast.loading("Enregistrement...")
+
+        fetch('https://skydrone-api.herokuapp.com/api/v1/drones', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + user.token},
+            body: JSON.stringify(data.drone)
+            })
+            .then(res => res.json())
+            .then(data => {
+                setTimeout(() => {
+                    toast.update(testToast, { render: "Ajouté avec succès", type: "success", isLoading: false, autoClose: 2000 });
+                    setTimeout(() => {
+                        window.location.href = '../products'
+                    }, 2000)
+                }, 1000)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, });
+            });
+        
+        
+    
+        event.preventDefault();
     }
 
     const handleSubmit = (event) => {
@@ -204,10 +251,11 @@ export default function DronePage() {
 return (
     <>
     <ToastContainer />
-    <h1>Produit</h1>
+    <h2>{ id ? 'Drone' : 'Nouveau Drone'}</h2>
+    <hr />
     <div className="row mt-3">
         <form className="col-8" onSubmit={id ? handleSubmit : handleSubmitNew} >
-            <h2>Informations</h2>
+            <h3>Informations</h3>
             <div className="card p-4" >
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Titre</label>
@@ -221,10 +269,11 @@ return (
                     <label htmlFor="price" className="form-label">Prix</label>
                     <input type="number" name='pricePerDay_d' className="form-control w-auto" id="price" placeholder="Prix du produit"  value={data.drone ? data.drone.pricePerDay_d : ''} onChange={ e => handleChange(e, 'drone')}></input>
                 </div>
+                {id ? 
                 <div className="mb-0">
                     <label htmlFor="image" className="form-label">Images</label>
                     <input type="file" className="form-control w-auto" id="image" multiple onChange={e => handleImagePreview(e)}></input>
-                    <div className='border container-images d-flex mt-2 row p-2 m-0'>
+                    <div className='container-images d-flex mt-2 row p-2 m-0'>
                         {data.images ? data.images.map((img, index) => {
                                 return (
                         <div className='card-images col-2' key={index}>
@@ -235,26 +284,32 @@ return (
                                 </svg>
                             </span>
                         </div>
-                            )}) : ''}  
+                            )}) : null }  
                     </div>
                 </div>
-            </div>
-            <div className='col-12 d-flex mt-3'>
-                <button type='submit' className='btn btn-primary ms-auto'>Enregistrer</button>
-            </div>
-        </form>
-        <div className="col-4">
-            <h2>Aperçu</h2>
-            <div className="card">
-                <div className="productCarousel" >
-                <AliceCarousel
-                    className="carousel"
-                    disableDotsControls={true}
-                    animationDuration={1000}
-                    items={imgArray} />
+                : null }
+                <div className='col-12 d-flex mt-3'>
+                    <button type='submit' className='btn btn-primary ms-auto'>Enregistrer</button>
                 </div>
             </div>
+            
+        </form>
+        {id ? 
+        <div className="col-4">
+            <h3>Réservations</h3>
+            <div className="order-container">
+                {data.orders.length ? data.orders.map((order, index) => {
+                    return (
+                        < OrderCard order={order} key={index} style='mini'/>
+                    )
+                }) : 
+                    <div className='card d-flex p-4 justify-content-center'>
+                        <span>Aucune réservation &#128554;</span>
+                    </div>
+                 }
+            </div>
         </div>
+        : null }
     </div>
     
     </>

@@ -36,7 +36,6 @@ export default function CustomerCard({customer}) {
                 .then(res => res.json())
                 .then(data => {
                     userData = data.user
-                    console.log(data);
                 }
                 )
     
@@ -79,7 +78,6 @@ export default function CustomerCard({customer}) {
         setFetchData()
     }, [])
 
-    console.log(data);
 
     const getRole = (key) => { 
         if (data.roles.length == 0) return

@@ -20,7 +20,8 @@ const displayTime = (date) => {
 }
   
 
-export default function DroneCard({order}) {
+export default function DroneCard({order, style}) {
+    console.log(style);
     const [image, setImage] = useState('')
     const [drone, setDrone] = useState({})
     const {user} = useContext(UserContext)
@@ -61,11 +62,13 @@ export default function DroneCard({order}) {
                         </div>
                     </div>
                 </div>
+                { style != 'mini' ? 
                 <div className='col d-flex align-items-end'>
                     <Link to={'/order/' + order._id} className="btn btn-primary ms-auto">
                         Détails
                     </Link>
-                </div>
+                </div> 
+                : null}
             </div>
         </div>
     )
