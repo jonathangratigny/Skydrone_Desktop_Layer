@@ -5,6 +5,9 @@ import AliceCarousel from 'react-alice-carousel'
 import 'react-alice-carousel/lib/alice-carousel.css'
 import './DronePage.scss'
 import { UserContext } from '../user/UserContext'
+import PriamryButton from '../button/primaryButton'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 
@@ -22,12 +25,13 @@ export default function DronePage() {
    /*  const [drone, setDrone] = useState([]) */
     /* const [images, setImages] = useState([]) */
     const [load, setLoad] = useState(true)
-    const [image, setImage] = useState([])
     const [data, setData] = useState({
         drone: {},
         images: []
     })
     useEffect (() => {
+
+
         let drone, 
             images
         async function fetchData() {
@@ -42,9 +46,15 @@ export default function DronePage() {
                     .then(response => response.json())
                     .then(data => {
                         images = []
+                        console.log(data);
                         data.forEach(element => {
                             let url = `data:image/png;base64,${toBase64(element.img.data)}`
-                            images.push(url) 
+                            let imageId = element.id_image
+                            let imageData = {
+                                url: url,
+                                id: imageId
+                            }
+                            images.push(imageData)
                             setLoad(false)
                         });
                     
@@ -61,7 +71,6 @@ export default function DronePage() {
             data.images.forEach(element => {
                 imgArray.push(<img src={element} alt="presentation" />)
             })
-            console.log(data.images);
         }
 
         setFetchData()
@@ -77,6 +86,8 @@ export default function DronePage() {
 
     const handleSubmit = (event) => {
 
+        const testToast = toast.loading("Please wait...")
+
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + id, {
             method: 'PATCH',
             headers: {
@@ -86,31 +97,21 @@ export default function DronePage() {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+                /* toast.update('Drone mis à jour', {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                }) */
             }
         )
-        if (image.length > 0) {
-            console.log(image);
-            for (let index = 0; index < image.length; index++) {
-                let element = image[index];
-                console.log(element);
-                let data = new FormData()
-                data.append('image', element)
-                fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + user.token},
-                    body: data,
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log('Success', data)
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-            }
-    }
+        
+        setTimeout(() => {
+            toast.update(testToast, { render: "All is good", type: "success", isLoading: false });
+            setTimeout(() => {
+                window.location.href = '../products'
+            }, 1000)
+        }, 1000)
+    
         event.preventDefault();
     } 
 
@@ -130,25 +131,78 @@ export default function DronePage() {
                 break;
         }
     }
+    const handleUpload = (imgKey) => {
+        console.log(imgKey);
+        console.log(image);
+        let element = image[imgKey];
+        console.log(element);
+        return
+        let data = new FormData()
+        data.append('image', element)
+        fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + user.token},
+            body: data,
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('Success', data)
+            /* toast.update(testToast, { render: "All is good", type: "success", isLoading: false }); */
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+    const [image, setImage] = useState()
 
     const handleImagePreview = (files) => {
+
+        setImage('test')
+        console.log()
+
             const allFiles = files.target.files
             console.log(allFiles);
-            const image = document.getElementById('image')
+            const imageEl = document.getElementById('image')
             if (allFiles) {
                 Array.from(allFiles).forEach(file => {
+                    console.log(file);
                     const img = document.createElement('img')
+                    const container = document.createElement('div')
+                    const uploadLogo = document.createElement('span')
+                    uploadLogo.innerHTML = 
+                    `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                        <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+                    </svg>`
+                    container.className = 'border import'
                     img.classList.add('image-preview')
+                    uploadLogo.id = 'uploadImage'
                     let imgSrc = URL.createObjectURL(file)
                     img.src = imgSrc
-                    image.parentNode.insertBefore(img, image.nextSibling)
-                    setImage(previousState => [...previousState, file])
+                    container.appendChild(img)
+                    container.appendChild(uploadLogo)
+                    imageEl.parentNode.insertBefore(container, imageEl.nextSibling)
+                    uploadLogo.addEventListener('click', () => {
+                        handleUpload(image.length)
+                    } )
                 })
             }
         }
     
-  return (
+    const deleteImage = (id) => {
+        fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
+                method: 'DELETE',
+                headers: {'Authorization': 'Bearer ' + user.token}
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Success', data)
+            })
+    }
+    console.log(data);
+return (
     <>
+    <ToastContainer />
     <h1>Produit</h1>
     <div className="row mt-3">
         <form className="col-8" onSubmit={id ? handleSubmit : handleSubmitNew} >
@@ -156,26 +210,31 @@ export default function DronePage() {
             <div className="card p-4" >
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Titre</label>
-                    <input type="text" name='name_d' className="form-control" id="title" placeholder="Titre du produit" value={data.drone.name_d || ''} onChange={ e => handleChange(e, 'drone')}></input>
+                    <input type="text" name='name_d' className="form-control" id="title" placeholder="Titre du produit" value={data.drone ? data.drone.name_d : ''} onChange={ e => handleChange(e, 'drone')}></input>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="desc" className="form-label">Description</label>
-                    <textarea className="form-control" name='description_d' id="desc" rows="6" placeholder="Description du produit"  value={data.drone.description_d || ''} onChange={ e => handleChange(e, 'drone')}></textarea>
+                    <textarea className="form-control" name='description_d' id="desc" rows="6" placeholder="Description du produit"  value={data.drone ?  data.drone.description_d : ''} onChange={ e => handleChange(e, 'drone')}></textarea>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="price" className="form-label">Prix</label>
-                    <input type="number" name='pricePerDay_d' className="form-control" id="price" placeholder="Prix du produit"  value={data.drone.pricePerDay_d || ''} onChange={ e => handleChange(e, 'drone')}></input>
+                    <input type="number" name='pricePerDay_d' className="form-control w-auto" id="price" placeholder="Prix du produit"  value={data.drone ? data.drone.pricePerDay_d : ''} onChange={ e => handleChange(e, 'drone')}></input>
                 </div>
                 <div className="mb-0">
                     <label htmlFor="image" className="form-label">Images</label>
-                    <input type="file" className="form-control" id="image" multiple onChange={e => handleImagePreview(e)}></input>
-                    <div className='border container-images d-flex align-items-center mt-2'>
-                        {data.images.map((img, index) => {
+                    <input type="file" className="form-control w-auto" id="image" multiple onChange={e => handleImagePreview(e)}></input>
+                    <div className='border container-images d-flex mt-2'>
+                        {data.images ? data.images.map((img, index) => {
                                 return (
                         <div className='card-images col-2' key={index}>
-                                <img src={img}></img>
+                            <img src={img.url} alt="preview"></img>
+                            <span onClick={() => deleteImage(img.id)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                </svg>
+                            </span>
                         </div>
-                            )})}  
+                            )}) : ''}  
                     </div>
                 </div>
             </div>
