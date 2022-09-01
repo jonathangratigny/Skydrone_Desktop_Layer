@@ -29,8 +29,9 @@ export default function DronePage() {
         drone: {},
         images: []
     })
-    useEffect (() => {
+    const [image, setImage] = useState()
 
+    useEffect (() => {
 
         let drone, 
             images
@@ -75,7 +76,7 @@ export default function DronePage() {
 
         setFetchData()
 
-    }, [])
+    }, [image])
 
 
     
@@ -86,7 +87,7 @@ export default function DronePage() {
 
     const handleSubmit = (event) => {
 
-        const testToast = toast.loading("Please wait...")
+        const testToast = toast.loading("Enregistrement...")
 
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + id, {
             method: 'PATCH',
@@ -97,20 +98,19 @@ export default function DronePage() {
             })
             .then(res => res.json())
             .then(data => {
-                /* toast.update('Drone mis à jour', {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: 2000,
-                    hideProgressBar: true,
-                }) */
-            }
-        )
+                setTimeout(() => {
+                    toast.update(testToast, { render: "Enregisté avec succès", type: "success", isLoading: false, autoClose: 2000 });
+                    setTimeout(() => {
+                        window.location.href = '../products'
+                    }, 2000)
+                }, 1000)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, });
+            });
         
-        setTimeout(() => {
-            toast.update(testToast, { render: "All is good", type: "success", isLoading: false });
-            setTimeout(() => {
-                window.location.href = '../products'
-            }, 1000)
-        }, 1000)
+        
     
         event.preventDefault();
     } 
@@ -131,14 +131,10 @@ export default function DronePage() {
                 break;
         }
     }
-    const handleUpload = (imgKey) => {
-        console.log(imgKey);
-        console.log(image);
-        let element = image[imgKey];
-        console.log(element);
-        return
+    const handleUpload = (file) => {
+        const testToast = toast.loading("Upload de l'image...")
         let data = new FormData()
-        data.append('image', element)
+        data.append('image', file)
         fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
             method: 'POST',
             headers: {
@@ -148,25 +144,24 @@ export default function DronePage() {
         .then(res => res.json())
         .then(data => {
             console.log('Success', data)
-            /* toast.update(testToast, { render: "All is good", type: "success", isLoading: false }); */
+            toast.update(testToast, { render: "Uplaod avec succès", type: "success", isLoading: false, autoClose: 2000, });
+            setImage(data)
         })
         .catch((error) => {
             console.error('Error:', error);
+            toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, });
         });
     }
-    const [image, setImage] = useState()
+
+
 
     const handleImagePreview = (files) => {
-
-        setImage('test')
-        console.log()
-
+        
             const allFiles = files.target.files
             console.log(allFiles);
             const imageEl = document.getElementById('image')
             if (allFiles) {
                 Array.from(allFiles).forEach(file => {
-                    console.log(file);
                     const img = document.createElement('img')
                     const container = document.createElement('div')
                     const uploadLogo = document.createElement('span')
@@ -183,13 +178,14 @@ export default function DronePage() {
                     container.appendChild(uploadLogo)
                     imageEl.parentNode.insertBefore(container, imageEl.nextSibling)
                     uploadLogo.addEventListener('click', () => {
-                        handleUpload(image.length)
+                        handleUpload(file)
                     } )
                 })
             }
         }
     
     const deleteImage = (id) => {
+        const testToast = toast.loading("Suppression...")
         fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
                 method: 'DELETE',
                 headers: {'Authorization': 'Bearer ' + user.token}
@@ -197,9 +193,14 @@ export default function DronePage() {
             .then(res => res.json())
             .then(data => {
                 console.log('Success', data)
+                setImage(data)
+                toast.update(testToast, { render: "Supprimer avec succès", type: "success", isLoading: false, autoClose: 2000, });
             })
+            .catch((error) => {
+                console.error('Error:', error);
+                toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, });
+            });
     }
-    console.log(data);
 return (
     <>
     <ToastContainer />
@@ -223,7 +224,7 @@ return (
                 <div className="mb-0">
                     <label htmlFor="image" className="form-label">Images</label>
                     <input type="file" className="form-control w-auto" id="image" multiple onChange={e => handleImagePreview(e)}></input>
-                    <div className='border container-images d-flex mt-2'>
+                    <div className='border container-images d-flex mt-2 row p-2 m-0'>
                         {data.images ? data.images.map((img, index) => {
                                 return (
                         <div className='card-images col-2' key={index}>
