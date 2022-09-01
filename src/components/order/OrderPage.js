@@ -105,7 +105,7 @@ export default function OrderPage() {
     const [ totalPrice, setTotalPrice ] = useState(0)
 
 
-  return (
+return (
     <>
     <h1>Réservation</h1>
     <div className="row mt-3">

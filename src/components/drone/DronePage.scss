@@ -12,15 +12,46 @@
 
     .card-images {
         max-height: 120px;
+        position: relative;
         img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
+        span {
+            cursor: pointer;
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            opacity: 0.6;
+            transition: all 0.25s;
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.import {
+    margin: 0.5rem 0.5rem 0 0;
+    padding: 1.5rem;
+    width: auto !important;
+    display: inline-block;
+    position: relative;
+    span {
+        cursor: pointer;
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        opacity: 0.6;
+        transition: all 0.25s;
+        &:hover {
+            opacity: 1;
+        }
     }
 }
 
 .image-preview {
-    width: 150px;
+    max-height: 100px;
     object-fit: contain;
 }
