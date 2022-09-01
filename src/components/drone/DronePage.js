@@ -76,11 +76,6 @@ export default function DronePage() {
     }
 
     const handleSubmit = (event) => {
-    /*     console.log(`
-            title: ${title}
-            desc: ${desc}
-            price: ${price}
-        `); */
 
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + id, {
             method: 'PATCH',
