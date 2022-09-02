@@ -6,7 +6,7 @@ export default function Home () {
     <>
       <h1>Home Page</h1>
      
-          <DronesList />
+          <DronesList style={'mini'} />
 
     </>
   )

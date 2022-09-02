@@ -6,6 +6,7 @@ import 'react-alice-carousel/lib/alice-carousel.css'
 import './DronePage.scss'
 import { UserContext } from '../user/UserContext'
 import PriamryButton from '../button/primaryButton'
+import DeleteButton from '../button/deleteButton'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import OrderCard from '../order/OrderCard'
@@ -23,8 +24,6 @@ export default function DronePage() {
     let imgArray = []
     const { user } = useContext(UserContext)
     const { id } = useParams()
-   /*  const [drone, setDrone] = useState([]) */
-    /* const [images, setImages] = useState([]) */
     const [load, setLoad] = useState(true)
     const [data, setData] = useState({
         drone: {},
@@ -38,6 +37,7 @@ export default function DronePage() {
         let drone, 
             images,
             orders
+
         async function fetchData() {
             if (id) {
                 await fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + id)
@@ -289,6 +289,7 @@ return (
                 </div>
                 : null }
                 <div className='col-12 d-flex mt-3'>
+                    <DeleteButton text={'Supprimer le drone'} id={id} target={'drone'}/>
                     <button type='submit' className='btn btn-primary ms-auto'>Enregistrer</button>
                 </div>
             </div>

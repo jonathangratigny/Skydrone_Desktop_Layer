@@ -21,14 +21,14 @@ const displayTime = (date) => {
   
 
 export default function DroneCard({order, style}) {
-    console.log(style);
+    console.log(order);
     const [image, setImage] = useState('')
     const [drone, setDrone] = useState({})
     const {user} = useContext(UserContext)
     const [customer, setCustomer] = useState({})
     const [load, setLoad] = useState(true)
     useEffect (() => {
-        fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + order.drone_id._id)
+        fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + order.drone_id)
         .then(response => response.json())
         .then(data => {
             setDrone(data)

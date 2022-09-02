@@ -16,7 +16,6 @@ const droneImage = async (id) => {
 export default function OrderList() {
     const [orders, setOrders] = useState([])
     const {user} = useContext(UserContext)
-    console.log(user);
     useEffect (() => {
         fetch('https://skydrone-api.herokuapp.com/api/v1/orders', {
                 headers: {
@@ -27,7 +26,6 @@ export default function OrderList() {
             .then(data => {
                 setOrders(data.reverse())
             })
-            console.log(orders);
     }, [])
 
   return (
@@ -44,7 +42,7 @@ export default function OrderList() {
                 <p>Aucune réservation</p>
             )}
         </div>
-        < PriamryButton type='button' id='addOrder' />
+        < PriamryButton type='button' id='addOrder' text={'Ajouter une commande'} />
     </div>
   )
 }

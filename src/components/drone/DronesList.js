@@ -14,7 +14,7 @@ const droneImage = async (id) => {
 })}
 
 
-export default function DroneList() {
+export default function DroneList({style}) {
     const [drones, setDrones] = useState([])
     useEffect (() => {
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones')
@@ -34,13 +34,15 @@ export default function DroneList() {
         </div>
         {drones.map((drone, key) =>
         (
-            < DroneCard drone={drone} key={key} />
+            < DroneCard drone={drone} key={key} style={style}/>
         ))}
-        <div className='col-12'>
-            <Link to={'../product/newDrone'} className="d-inline-block">
-                < PriamryButton type='button' id='addDrone' text='+ Drone' />
+        { style !== 'mini' ? 
+        <div className='col-sm-12 col-md-6 col-xl-3 d-flex justify-content-center align-items-center'>
+            <Link to={'../product/newDrone'} className="d-flex ">
+                < PriamryButton type='button' id='addDrone' text='Ajouter un Drone' />
             </Link>
         </div>
+        : null }
     </div>
   )
 }
