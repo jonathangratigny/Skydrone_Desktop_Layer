@@ -3,6 +3,7 @@ import PriamryButton from '../button/primaryButton'
 import { UserContext } from '../user/UserContext'
 import OrderCard from './OrderCard'
 import './OrderList.scss'
+import { Link } from 'react-router-dom'
 
 const droneImage = async (id) => {
     fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id)
@@ -42,7 +43,9 @@ export default function OrderList() {
                 <p>Aucune réservation</p>
             )}
         </div>
-        < PriamryButton type='button' id='addOrder' text={'Ajouter une commande'} />
+        <Link to={'../order/newOrder'} className="d-flex ">
+            < PriamryButton type='button' id='addOrder' text='Ajouter une commande' />
+        </Link>
     </div>
   )
 }

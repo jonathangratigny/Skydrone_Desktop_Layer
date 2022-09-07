@@ -36,6 +36,7 @@ const App = () => {
                   <Route path='/product/newDrone' exact element={<DronePage />}></Route>
                   <Route path='/orders' exact element={<OrderList />}></Route>
                   <Route path='/order/:id' exact element={<OrderPage />}></Route>
+                  <Route path='/order/newOrder' exact element={<OrderPage />}></Route>
                   <Route path='/customers' exact element={<CustomerList />}></Route>
                   <Route path='/customer/:id' exact element={<CustomerPage />}></Route>
                 </Routes>
