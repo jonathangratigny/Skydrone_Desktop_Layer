@@ -30,7 +30,7 @@ export default function OrderPage() {
         const data = await response.json()
         setOrderValue(data.order)
         setTotalPrice((calcTotalDays(data.order.startAt_o, data.order.endAt_o) * data.order.drone_id.pricePerDay_d).toFixed(2))
-        console.log();
+
         const respondeUser = await fetch('https://skydrone-api.herokuapp.com/api/v1/users/' + data.order.user_id._id, {
             method: 'GET',
             headers: {
@@ -70,9 +70,6 @@ export default function OrderPage() {
             })
     }, [])
 
-    console.log(infoValue);
-
-
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -80,7 +77,6 @@ export default function OrderPage() {
             ...prev,
             [name]: value
         }))
-        console.log(name, value)
     }
 
     const handleChangeInfo = (name, value) => {
@@ -114,7 +110,7 @@ export default function OrderPage() {
             showToastMessage()
         })
         .catch((error) => {
-            console.error('Error:', error);
+            error('Error:', error);
         });
 
         if (event)
@@ -124,7 +120,6 @@ export default function OrderPage() {
     }
 
     const handleSubmitNew = (event) => {
-        console.log('new order');
         orderValue.createdBy_o = user.user._id
         const testToast = toast.loading("Enregistrement...")
 

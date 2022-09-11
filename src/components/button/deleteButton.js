@@ -39,7 +39,7 @@ export default function DeleteButton ({target, id, text}) {
         })
         .then(res => res.json())
         .then(data => {
-            console.log('Success', data)
+            console.info('Success', data)
             toast.update(deleteToast, { render: "Supprimé avec succès", type: "success", isLoading: false, autoClose: 2000 });
             setTimeout(() => {
                 window.location.href = '../products'
