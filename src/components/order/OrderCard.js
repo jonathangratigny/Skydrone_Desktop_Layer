@@ -21,7 +21,6 @@ const displayTime = (date) => {
   
 
 export default function DroneCard({order, style}) {
-    console.log(order);
     const [image, setImage] = useState('')
     const [drone, setDrone] = useState({})
     const {user} = useContext(UserContext)

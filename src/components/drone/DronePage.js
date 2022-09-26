@@ -179,9 +179,11 @@ export default function DronePage() {
         }
     }
     const handleUpload = (file) => {
+        console.log(file);
         const testToast = toast.loading("Upload de l'image...")
         let data = new FormData()
         data.append('image', file)
+
         fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
             method: 'POST',
             headers: {
