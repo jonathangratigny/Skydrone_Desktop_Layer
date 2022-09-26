@@ -31,7 +31,7 @@ export default function Login() {
             localStorage.setItem('user', json)
             setUser(result)
         })
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     }
 
   return (

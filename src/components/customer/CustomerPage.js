@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import { UserContext } from '../user/UserContext'
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import OrderCard from '../order/OrderCard'
 import './Customer.scss'
 import {displayDate, displayTime} from '../../utils/dateFormat'
@@ -210,6 +210,8 @@ export default function CustomerPage() {
                         <p>Dernière modification le {displayDate(data.customer.updatedAt)} à {displayTime(data.customer.updatedAt)}</p>
                     </div>
                     <div>
+                    <Link to={'/customers'}><button className='btn btn-dark mx-2'>Retour</button></Link>
+
                         <button type="submit" className="btn btn-primary" onClick={e => handleSubmit(e)}>Enregistrer</button>
                     </div>
                 </div>
