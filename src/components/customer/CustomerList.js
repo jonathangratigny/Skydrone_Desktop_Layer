@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from "react";
 import {UserContext} from "../user/UserContext";
 import CustomerCard from "./CustomerCard";
 import PriamryButton from '../button/primaryButton'
+import { Link } from 'react-router-dom'
 
 export default function CustomerList() {
     const [customers, setCustomers] = useState([])
@@ -16,14 +17,20 @@ export default function CustomerList() {
         })
         .then(response => response.json())
         .then(data => {
-            setCustomers(data)
+            let rev = data.reverse()
+            setCustomers(rev)
         })
     }, [])
 
     return (
         <div className='row g-3 customersList'>
             <div className='col-12'>
-                <h2>Les utilisateurs</h2>
+                <div className="d-flex align-items-start">
+                    <h2 className="me-auto">Les utilisateurs</h2>
+                    <Link to={'../customer/newCustomer'} className="d-flex ">
+                        <PriamryButton type='button' id='addCustomer' text='+ Utilisateur' />
+                    </Link>
+                </div>
                 <hr></hr>
             </div>
             <div className='col-12 listContainer'>
@@ -32,7 +39,7 @@ export default function CustomerList() {
                     < CustomerCard customer={customer} key={key} />
                 ))}
             </div>
-            < PriamryButton type='button' id='addCustomer' text='+ Utilisateur' />
+            
         </div>
       )
 }

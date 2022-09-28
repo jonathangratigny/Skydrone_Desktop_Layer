@@ -29,20 +29,19 @@ export default function DroneList({style}) {
   return (
     <div className='row g-3 droneList'>
         <div className='col-12'>
-            <h2>Les drones</h2>
+            <div className='d-flex align-items-start'>
+                <h2 className='me-auto'>Les drones</h2>
+                <Link to={'../product/newDrone'} className="d-flex ">
+                    < PriamryButton type='button' id='addDrone' text='Ajouter un Drone' />
+                </Link>
+            </div>
             <hr></hr>
         </div>
         {drones.map((drone, key) =>
         (
             < DroneCard drone={drone} key={key} style={style}/>
         ))}
-        { style !== 'mini' ? 
-        <div className='col-sm-12 col-md-6 col-xl-3 d-flex justify-content-center align-items-center'>
-            <Link to={'../product/newDrone'} className="d-flex ">
-                < PriamryButton type='button' id='addDrone' text='Ajouter un Drone' />
-            </Link>
-        </div>
-        : null }
+        
     </div>
   )
 }

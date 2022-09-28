@@ -39,6 +39,7 @@ const App = () => {
                   <Route path='/order/newOrder' exact element={<OrderPage />}></Route>
                   <Route path='/customers' exact element={<CustomerList />}></Route>
                   <Route path='/customer/:id' exact element={<CustomerPage />}></Route>
+                  <Route path='/customer/newCustomer' exact element={<CustomerPage />}></Route>
                 </Routes>
               </main>
             </>

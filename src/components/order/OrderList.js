@@ -32,7 +32,12 @@ export default function OrderList() {
   return (
     <div className='row g-3 orderList'>
         <div className='col-12'>
-            <h2>Les réservations</h2>
+            <div className="d-flex align-items-start">
+                <h2 className='me-auto'>Les réservations</h2>
+                <Link to={'../order/newOrder'} className="d-flex ">
+                    < PriamryButton type='button' id='addOrder' text='Ajouter une commande' />
+                </Link>
+            </div>
             <hr></hr>
         </div>
         <div className='col-12 listContainer'>
@@ -43,9 +48,7 @@ export default function OrderList() {
                 <p>Aucune réservation</p>
             )}
         </div>
-        <Link to={'../order/newOrder'} className="d-flex ">
-            < PriamryButton type='button' id='addOrder' text='Ajouter une commande' />
-        </Link>
+        
     </div>
   )
 }

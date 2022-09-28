@@ -84,6 +84,7 @@ export default function DronePage() {
                 })
                     .then(res => res.json())
                     .then(data => {
+                        console.log(data);
                         qrcode = []
                         qrcode.push(data.drone_QR.qr_code)
                     })
@@ -194,7 +195,7 @@ export default function DronePage() {
         const testToast = toast.loading("Upload de l'image...")
         let data = new FormData()
         data.append('image', file)
-
+        console.log(file.file.path);
         fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
             method: 'POST',
             headers: {
