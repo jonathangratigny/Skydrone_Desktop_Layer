@@ -24,7 +24,14 @@ export default function DroneList({style}) {
             })
     }, [])
    
-    
+    const shortList = (style, key) => {
+        if (style == null) {
+            return true
+        }
+        if (style == 'mini' && key < 5) {
+            return true
+        }
+    }
 
   return (
     <div className='row g-3 droneList'>
@@ -38,9 +45,10 @@ export default function DroneList({style}) {
             <hr></hr>
         </div>
         {drones.map((drone, key) =>
+        shortList(style, key) ? 
         (
             < DroneCard drone={drone} key={key} style={style}/>
-        ))}
+        ) : null)}
         
     </div>
   )

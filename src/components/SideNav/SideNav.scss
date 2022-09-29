@@ -8,3 +8,20 @@ aside {
     position: sticky;
     top: 0;
 }
+
+.pagination {
+    span {
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+        white-space: 0;
+        &:hover {
+            border: 1px solid rgb(96, 96, 96);
+        }
+    }
+}

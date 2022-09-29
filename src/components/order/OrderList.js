@@ -14,7 +14,7 @@ const droneImage = async (id) => {
 })}
 
 
-export default function OrderList() {
+export default function OrderList({style}) {
     const [orders, setOrders] = useState([])
     const {user} = useContext(UserContext)
     useEffect (() => {
@@ -29,6 +29,15 @@ export default function OrderList() {
             })
     }, [])
 
+    const shortList = (style, key) => {
+        if (style == null) {
+            return true
+        }
+        if (style == 'mini' && key < 2) {
+            return true
+        }
+    }
+
   return (
     <div className='row g-3 orderList'>
         <div className='col-12'>
@@ -42,9 +51,11 @@ export default function OrderList() {
         </div>
         <div className='col-12 listContainer'>
             {orders ? orders.map((order, key) =>
-            (
-                < OrderCard order={order} key={key} />
-            )) : (
+                shortList(style, key) ?
+                (
+                    < OrderCard order={order} key={key} />
+                ) : null) 
+            : (
                 <p>Aucune réservation</p>
             )}
         </div>

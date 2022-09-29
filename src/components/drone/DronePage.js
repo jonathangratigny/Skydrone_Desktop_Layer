@@ -337,7 +337,6 @@ export default function DronePage() {
                         }
                         <div className='col-12 d-flex mt-3'>
                             <DeleteButton text={'Supprimer le drone'} id={id} target={'drone'} />
-                            <Link to={'/products'}><button className='btn btn-dark'>Retour</button></Link>
                             <button type='submit' className='btn btn-primary ms-auto'>Enregistrer</button>
                         </div>
                     </div>

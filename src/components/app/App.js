@@ -14,6 +14,7 @@ import OrderList from '../order/OrderList.js'
 import OrderPage from '../order/OrderPage.js'
 import CustomerList from '../customer/CustomerList.js'
 import CustomerPage from '../customer/CustomerPage.js'
+import './App.scss'
 
 
 const App = () => {
