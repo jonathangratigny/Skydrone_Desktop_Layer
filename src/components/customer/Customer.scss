@@ -28,3 +28,19 @@
 									   color-stop(0.72, rgb(73,125,189)),
 									   color-stop(0.86, rgb(28,58,148)));
 }
+
+.user {
+	nav {
+		.active {
+			font-weight: 500;
+		}
+	}
+}
+
+#outline {
+	display: block;
+	position: relative;
+	background-color: black;
+	height: 2px;
+	transition: all 0.25s;
+}

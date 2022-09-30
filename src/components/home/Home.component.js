@@ -7,7 +7,7 @@ import './Home.scss'
 export default function Home () {
   return (
     <>
-      <h1>Home Page</h1>
+      <h3>Bienvenue dans l'outil d'administration</h3>
       <section>
         <DronesList style={'mini'} />
       </section>

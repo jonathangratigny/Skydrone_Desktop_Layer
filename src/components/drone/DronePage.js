@@ -84,7 +84,6 @@ export default function DronePage() {
                 })
                     .then(res => res.json())
                     .then(data => {
-                        console.log(data);
                         qrcode = []
                         qrcode.push(data.drone_QR.qr_code)
                     })
@@ -191,11 +190,9 @@ export default function DronePage() {
         }
     }
     const handleUpload = (file) => {
-        console.log(file);
         const testToast = toast.loading("Upload de l'image...")
         let data = new FormData()
         data.append('image', file)
-        console.log(file.file.path);
         fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
             method: 'POST',
             headers: {
@@ -218,7 +215,6 @@ export default function DronePage() {
 
 
     const handleImagePreview = (files) => {
-
         const allFiles = files.target.files
         const imageEl = document.getElementById('image')
         if (allFiles) {
@@ -327,7 +323,7 @@ export default function DronePage() {
                             data.qrcode ?
                                 <div className='mt-3'>
                                     <label htmlFor="qrcode" className="">QR Code</label><div className='d-flex justify-content-start'>
-                                        <img src={data.qrcode} alt="Qr code" className=' w-25' />
+                                        <img src={data.qrcode} alt="Qr code" className='qrcode' />
                                     </div>
                                 </div>
                                 :

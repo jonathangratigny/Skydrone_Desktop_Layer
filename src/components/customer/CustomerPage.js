@@ -174,15 +174,49 @@ export default function CustomerPage() {
         event.preventDefault()
     }
 
+    function navOutline () {
+        const allBtn = document.querySelectorAll('.user nav span')
+        const outline = document.getElementById('outline')
+        const btnActive = document.querySelector('.user nav .active')
+        let index
+        allBtn.forEach((el, key) => {
+            if (el == btnActive) {
+                index = key
+            }
+        })
+        switch (index) {
+            case 0:
+                outline.style.width = allBtn[0].offsetWidth + 'px'
+                outline.style.left = 0 + 'px'
+                break;
+            case 1:
+                outline.style.width = allBtn[1].offsetWidth + 'px'
+                outline.style.left = allBtn[0].offsetWidth + 'px'
+                break;
+            case 2:
+                outline.style.width = allBtn[2].offsetWidth + 'px'
+                outline.style.left = allBtn[0].offsetWidth + allBtn[1].offsetWidth + 'px'
+                break;
+            default:
+                break;
+        }
+    }
+    
+    useEffect(() => {
+        navOutline()
+    }, [category])
+
     return (
         <>
-       <h1>Utilisateur</h1>
-        <div className="row mt-3">
+       <h2>Utilisateur</h2>
+       <hr></hr>
+        <div className="row mt-3 user">
             <form className="col-12 "  onSubmit={id ? handleSubmit : handleSubmitNew} >
                 <nav className='mb-3 '>
-                    <button type='button' className='btn' onClick={ e => setCategory('user')}>Informations</button>
-                    <button type='button' className='btn' onClick={ e => setCategory('company')}>Entreprise</button>
-                    <button type='button' className='btn' onClick={ e => setCategory('order')}>Réservations</button>
+                    <span type='button' className={'btn ' + (category == 'user' ? 'active' : '')} onClick={ e => setCategory('user')}>Informations</span>
+                    <span type='button' className={'btn ' + (category == 'company' ? 'active' : '')} onClick={ e => setCategory('company')}>Entreprise</span>
+                    <span type='button' className={'btn ' + (category == 'order' ? 'active' : '')} onClick={ e => setCategory('order')}>Réservations</span>
+                    <span id='outline'></span>
                 </nav>
                 {category === 'user' && (
                 <div className="card p-4" id='user'>

@@ -44,7 +44,7 @@ export default function OrderList({style}) {
             <div className="d-flex align-items-start">
                 <h2 className='me-auto'>Les réservations</h2>
                 <Link to={'../order/newOrder'} className="d-flex ">
-                    < PriamryButton type='button' id='addOrder' text='Ajouter une commande' />
+                    < PriamryButton type='button' id='addOrder' text='Ajouter une réservation' />
                 </Link>
             </div>
             <hr></hr>

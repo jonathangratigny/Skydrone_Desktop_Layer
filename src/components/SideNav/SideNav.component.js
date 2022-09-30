@@ -89,12 +89,12 @@ export default function SideNav () {
             { user ? 
             <div className="dropdown">
                 <a href="#" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                <i className="bi bi-person fs-4 me-2"></i>
                     <strong>{customer.firstName_u} {customer.lastName_u}</strong>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <li><a className="dropdown-item disabled" href="#">Settings</a></li>
-                    <li><a className="dropdown-item disabled" href="#">Profile</a></li>
+                    <li><Link to={''} className="dropdown-item disabled">Settings</Link></li>
+                    <li><Link to={'customer/' + customer._id}  className="dropdown-item">Profile</Link></li>
                     <li><hr className="dropdown-divider"></hr></li>
                     <li><button type='button' className="dropdown-item" onClick={logOut}>Sign out</button></li>
                 </ul>
