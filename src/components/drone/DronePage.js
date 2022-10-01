@@ -84,8 +84,11 @@ export default function DronePage() {
                 })
                     .then(res => res.json())
                     .then(data => {
-                        qrcode = []
-                        qrcode.push(data.drone_QR.qr_code)
+                        console.log(data);
+                        if (data.drone_QR){
+                            qrcode = []
+                            qrcode.push(data.drone_QR.qr_code)
+                        }
                     })
             }
         }
@@ -212,6 +215,8 @@ export default function DronePage() {
             })
     }
 
+    console.log(data.qrcode);
+
 
 
     const handleImagePreview = (files) => {
@@ -256,7 +261,11 @@ export default function DronePage() {
         })
             .then(res => res.json())
             .then(data => {
-                setData({ qrcode: data.qrcode[0] })
+                console.log(data);
+                setData(prev => ({
+                    ...prev,
+                    qrcode: data.qrcode.src
+                }))
             })
     }
 
@@ -328,7 +337,7 @@ export default function DronePage() {
                                 </div>
                                 :
                                 <div className='container'>
-                                    <button className='btn btn-success' onClick={() => generateQR()}>Generer un QR Code</button>
+                                    <button type='button' className='btn btn-success' onClick={() => generateQR()}>Generer un QR Code</button>
                                 </div>
                         }
                         <div className='col-12 d-flex mt-3'>

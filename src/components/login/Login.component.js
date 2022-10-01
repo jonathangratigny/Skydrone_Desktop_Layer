@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {baseUrl} from '../../utils/globalVariables'
 import {UserContext} from '../user/UserContext'
+import { useForm } from "react-hook-form";
 
 
 export default function Login() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
     const {user, setUser} = useContext(UserContext)
+    const { register, handleSubmit, setError, clearErrors, formState: { errors } } = useForm();
+    const onSubmit = data => handleLogin(data)
 
     function CheckError(response) {
         if (response.status >= 200 && response.status <= 299) {
@@ -16,11 +16,11 @@ export default function Login() {
           throw Error(response.statusText);
         }
       }
-    //TODO - add error handling in the api response
-    const handleLogin = () => {
+
+    const handleLogin = (data) => {
         fetch(`${baseUrl}/login`,{
             method:'post',
-            body:JSON.stringify({email, password}),
+            body:JSON.stringify(data),
             headers:{
                 'Content-Type':'application/json'
             }
@@ -31,7 +31,15 @@ export default function Login() {
             localStorage.setItem('user', json)
             setUser(result)
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+            console.error(err)
+            setError('api', { type: 'custom', message: err });
+        })
+    }
+
+    const errorOrNot = (name) => {
+        if (Object.keys(errors).length === 0) return false
+        return true
     }
 
   return (
@@ -41,68 +49,39 @@ export default function Login() {
                     <div className="row justify-content-center">
                         <div className="col-xxl-4 col-lg-5">
                             <div className="card">
-
                                 <div className="card-header pt-4 pb-4 text-center bg-primary">
                                     <a href="index.html">
-                                        <span><img src="assets/images/logo.png" alt="" height="18"></img></span>
+                                        <span className='text-white fs-4'>SKY'DRONE</span>
                                     </a>
                                 </div>
-
                                 <div className="card-body p-4">
-                                    
                                     <div className="text-center w-75 m-auto">
-                                        <h4 className="text-dark-50 text-center pb-0 fw-bold">Sign In</h4>
-                                        <p className="text-muted mb-4">Enter your email address and password to access admin panel.</p>
+                                        <h4 className="text-dark-50 text-center pb-0 fw-bold">Connection</h4>
+                                        <p className="text-muted mb-4">Entrer votre adresse mail et votre mot de passe pour acceder aux outils d'administration</p>
                                     </div>
-
+                                    {errorOrNot() && <span className='errorMessage'>Email ou mot de passe incorrect</span>}
+                                    <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="mb-3">
                                             <label htmlFor="emailaddress" className="form-label">Email address</label>
-                                            <input className="form-control" 
-                                                type="email" 
-                                                id="emailaddress" 
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                value={email}
-                                                placeholder="Enter your email">
+                                            <input className="form-control"
+                                                {...register("email", { required: "Ce champ est requis.", pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g })}
+                                                placeholder="Entrer votre adresse mail">
                                             </input>
                                         </div>
-
                                         <div className="mb-3">
-                                            <a href="pages-recoverpw.html" className="text-muted float-end"><small>Forgot your password?</small></a>
                                             <label htmlFor="password" className="form-label">Password</label>
-                                            <div className="input-group input-group-merge">
-                                                <input className="form-control" 
-                                                    type="password" 
-                                                    id="password" 
-                                                    onChange={(e) => setPassword(e.target.value)}
-                                                    value={password}
-                                                    placeholder="Enter your password">
+                                            <div className="">
+                                                <input className="form-control"
+                                                    {...register("password", { required: true })}
+                                                    placeholder="Entrer votre mot de passe">
                                                 </input>
                                             </div>
                                         </div>
-
-                                        <div className="mb-3 mb-3">
-                                            <div className="form-check">
-                                                <input type="checkbox" className="form-check-input" id="checkbox-signin" ></input>
-                                                <label className="form-check-label" htmlFor="checkbox-signin">Remember me</label>
-                                            </div>
-                                        </div>
-
                                         <div className="mb-3 mb-0 text-center">
-                                            <button 
-                                                className="btn btn-primary"
-                                                onClick={handleLogin}
-                                                type="button"> 
-                                                    Log In 
-                                            </button>
+                                            <button className="btn btn-primary" type="submit" onClick={() => clearErrors("api")}>Connection</button>
                                         </div>
-
+                                    </form>
                                 </div>
-                            </div>
-
-                            <div className="row mt-3">
-                                <div className="col-12 text-center">
-                                    <p className="text-muted">Don't have an account? <a href="pages-register.html" className="text-muted ms-1"><b>Sign Up</b></a></p>
-                                </div> 
                             </div>
                         </div>
                     </div>

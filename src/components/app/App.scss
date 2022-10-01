@@ -4,3 +4,27 @@ main {
         text-transform: uppercase;
     }
 }
+
+body {
+    min-width: 100%;
+    min-height: 100%;
+  }
+  
+  #root {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+
+.errorMessage {
+  display: block;
+  padding: 16px 16px;
+  margin: 0 auto;
+  margin-bottom: 8px;
+  font-size: 14px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+  background-color: rgba(248,81,73,0.15);
+  border-color: rgba(248,81,73,0.4);
+}
