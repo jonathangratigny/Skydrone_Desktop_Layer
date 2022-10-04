@@ -31,14 +31,18 @@ export default function OrderPage() {
         setOrderValue(data.order)
         setTotalPrice((calcTotalDays(data.order.startAt_o, data.order.endAt_o) * data.order.drone_id.pricePerDay_d).toFixed(2))
 
-        const respondeUser = await fetch('https://skydrone-api.herokuapp.com/api/v1/users/' + data.order.user_id._id, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${user.token}`
+        if (data.order.user_id) {
+            const respondeUser = await fetch('https://skydrone-api.herokuapp.com/api/v1/users/' + data.order.user_id._id, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            const dataUser = await respondeUser.json()
+            if (dataUser.user) {
+                setOrderUser(dataUser.user)
             }
-        })
-        const dataUser = await respondeUser.json()
-        setOrderUser(dataUser.user)
+        }
     }
 
     const calcTotalDays = (startDate, endDate) => {
@@ -222,19 +226,19 @@ export default function OrderPage() {
                     <div className="card p-4" >
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">Client</label>
-                            <input type="text" className="form-control" id="name" value={orderUser.firstName_u + ' ' + orderUser.lastName_u} disabled></input>
+                            <input type="text" className="form-control" id="name" value={orderUser.firstName_u ? orderUser.firstName_u + ' ' + orderUser.lastName_u : 'Inconnu'} disabled></input>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="company" className="form-label">Entreprise</label>
-                            <input type="text" className="form-control" id="company" value={orderUser.company_u} disabled></input>
+                            <input type="text" className="form-control" id="company" value={orderUser.company_u || 'Inconnu'} disabled></input>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="phone" className="form-label">Téléphone</label>
-                            <input type="text" className="form-control" id="phone" value={orderUser.phone_u} disabled></input>
+                            <input type="text" className="form-control" id="phone" value={orderUser.phone_u || 'Inconnu'} disabled></input>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="address" className="form-label">Adresse de livraison</label>
-                            <input type="text" className="form-control" id="address" value={orderUser.address_u} disabled></input>
+                            <input type="text" className="form-control" id="address" value={orderUser.address_u || 'Inconnu'} disabled></input>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="price" className="form-label">Prix total</label>

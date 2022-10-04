@@ -31,7 +31,8 @@ export default function DeleteButton ({target, id, text}) {
 
     const { user } = useContext(UserContext)
 
-    const deleteDrone = (id) => {
+    const deleteDrone = ({id, qrid}) => {
+        console.log(qrid);
         const deleteToast = toast.loading("Suppression...")
         fetch('https://skydrone-api.herokuapp.com/api/v1/drones/' + id, {
             method: 'DELETE',
@@ -49,6 +50,21 @@ export default function DeleteButton ({target, id, text}) {
             console.error('Error:', error);
             toast.update(deleteToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, });
         });
+
+        if (qrid) {
+            fetch('https://skydrone-api.herokuapp.com/api/v1/qrcodes/' + qrid, {
+                method: 'DELETE',
+                headers: {'Authorization': 'Bearer ' + user.token}
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.info('Success', data)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
     }
 
     const goodTarget = () => {
@@ -60,8 +76,6 @@ export default function DeleteButton ({target, id, text}) {
                 break;
         }
     }
-    
-
     
 
     return (
@@ -79,8 +93,8 @@ export default function DeleteButton ({target, id, text}) {
                     <div className="modal-body">
                         <p>Voulez vous vraiment supprimer ce drone ?</p>
                         <div className='d-flex justify-content-between'>
-                            <button className='btn btn-secondary' onClick={closeModal}>Annulé</button>
-                            <button className='btn btn-primary' onClick={goodTarget}>Supprimé</button>
+                            <button className='btn btn-secondary' onClick={closeModal}>Annuler</button>
+                            <button className='btn btn-primary' onClick={goodTarget}>Supprimer</button>
                         </div>
                     </div>
                     

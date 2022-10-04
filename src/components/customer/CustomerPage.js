@@ -258,7 +258,7 @@ export default function CustomerPage() {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="country" className="form-label">Pays</label>
-                        <input type="text" name='country_u' className="form-control" id="country" placeholder="Pays" value={data.customer ? data.customer.country_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        <input type="text" name='country_u' className="form-control" id="country" placeholder="Pays" value={data.customer ? data.customer.city_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="phone" className="form-label">Téléphone</label>

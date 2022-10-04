@@ -84,10 +84,8 @@ export default function DronePage() {
                 })
                     .then(res => res.json())
                     .then(data => {
-                        console.log(data);
                         if (data.drone_QR){
-                            qrcode = []
-                            qrcode.push(data.drone_QR.qr_code)
+                            qrcode = data.drone_QR
                         }
                     })
             }
@@ -128,8 +126,10 @@ export default function DronePage() {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 setTimeout(() => {
                     toast.update(testToast, { render: "Ajouté avec succès", type: "success", isLoading: false, autoClose: 2000 })
+                    generateQR(data.drone._id)
                     setTimeout(() => {
                         window.location.href = '../products'
                     }, 2000)
@@ -170,9 +170,6 @@ export default function DronePage() {
                 console.error('Error:', error)
                 toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, })
             })
-
-
-
         event.preventDefault()
     }
 
@@ -192,6 +189,7 @@ export default function DronePage() {
                 break
         }
     }
+
     const handleUpload = (file) => {
         const testToast = toast.loading("Upload de l'image...")
         let data = new FormData()
@@ -214,10 +212,6 @@ export default function DronePage() {
                 toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, })
             })
     }
-
-    console.log(data.qrcode);
-
-
 
     const handleImagePreview = (files) => {
         const allFiles = files.target.files
@@ -246,7 +240,7 @@ export default function DronePage() {
         }
     }
 
-    const generateQR = async () => {
+    const generateQR = async (id) => {
         await fetch('https://skydrone-api.herokuapp.com/api/v1/qrcodes/', {
             method: 'POST',
             headers: {
@@ -255,8 +249,8 @@ export default function DronePage() {
             },
             body:
                 JSON.stringify({
-                    "src": `https://skydrone-api.herokuapp.com/api/v1/drones/${data.drone._id}`,
-                    "drone_id": data.drone._id
+                    "src": `https://skydrone-api.herokuapp.com/api/v1/drones/${id || data.drone._id}`,
+                    "drone_id": id || data.drone._id
                 })
         })
             .then(res => res.json())
@@ -264,11 +258,11 @@ export default function DronePage() {
                 console.log(data);
                 setData(prev => ({
                     ...prev,
-                    qrcode: data.qrcode.src
+                    qrcode: data.qrCode
                 }))
             })
     }
-
+    
     const deleteImage = (id) => {
         const testToast = toast.loading("Suppression...")
         fetch('https://skydrone-api.herokuapp.com/api/v1/images/' + id, {
@@ -286,6 +280,10 @@ export default function DronePage() {
                 toast.update(testToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, })
             })
     }
+
+    console.log(user);
+    
+
     return (
         <>
             <ToastContainer />
@@ -293,7 +291,6 @@ export default function DronePage() {
             <hr />
             <div className="row mt-3">
                 <form className="col-8" onSubmit={id ? handleSubmit : handleSubmitNew} >
-
                     <h3>Informations</h3>
                     <div className="card p-4" >
                         <div className="mb-3 ">
@@ -332,16 +329,17 @@ export default function DronePage() {
                             data.qrcode ?
                                 <div className='mt-3'>
                                     <label htmlFor="qrcode" className="">QR Code</label><div className='d-flex justify-content-start'>
-                                        <img src={data.qrcode} alt="Qr code" className='qrcode' />
+                                        <img src={data.qrcode.qr_code} alt="Qr code" className='qrcode' />
                                     </div>
                                 </div>
-                                :
+                                : null /* data.drone ? 
                                 <div className='container'>
                                     <button type='button' className='btn btn-success' onClick={() => generateQR()}>Generer un QR Code</button>
                                 </div>
+                                : null */
                         }
                         <div className='col-12 d-flex mt-3'>
-                            <DeleteButton text={'Supprimer le drone'} id={id} target={'drone'} />
+                            <DeleteButton text={'Supprimer le drone'} id={{id:id, qrid:data.qrcode && data.qrcode._id}} target={'drone'} />
                             <button type='submit' className='btn btn-primary ms-auto'>Enregistrer</button>
                         </div>
                     </div>
