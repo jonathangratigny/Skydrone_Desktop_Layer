@@ -5,6 +5,7 @@ import OrderCard from '../order/OrderCard'
 import './Customer.scss'
 import {displayDate, displayTime} from '../../utils/dateFormat'
 import { ToastContainer, toast } from 'react-toastify'
+import DeleteButton from '../button/deleteButton'
 
 export default function CustomerPage() {
     const { id } = useParams()
@@ -14,8 +15,6 @@ export default function CustomerPage() {
         orders: [],
         roles: []
     })
-    const [orders, setOrders] = useState(null)
-    const [roles, setRoles] = useState(null)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -220,26 +219,27 @@ export default function CustomerPage() {
                 </nav>
                 {category === 'user' && (
                 <div className="card p-4" id='user'>
-                    <div className="mb-3 d-flex">
-                        <div className="me-3">
+                    <div className=" d-flex flex-wrap">
+                        <div className="me-3 mb-3">
                             <label htmlFor="lastName" className="form-label">Nom</label>
                             <input type="text" name='lastName_u' className="form-control" id="lastName" placeholder="Nom" value={data.customer ? data.customer.lastName_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
                         </div>
-                        <div>
+                        <div className='me-3 mb-3'>
                             <label htmlFor="firstName" className="form-label">Prénom</label>
                             <input type="text" className="form-control" name='firstName_u' id="firstName" placeholder="Prénom" value={data.customer ? data.customer.firstName_u : '' } onChange={ e => handleChange(e, 'customer')}></input>
                         </div>
+                        {id ? '' :
+                        <div className='mb-3'>
+                            <label htmlFor="password" className="form-label">Mot de passe</label>
+                            <input type="text" name='password' className="form-control" id="password" placeholder="password" onChange={ e => handleChange(e, 'customer')}></input>
+                        </div>
+                        }
                     </div>
-                    {id ? '' :
-                    <div className="mb-3">
-                        <label htmlFor="password" className="form-label">Mot de passe</label>
-                        <input type="text" name='password' className="form-control" id="password" placeholder="password" onChange={ e => handleChange(e, 'customer')}></input>
-                    </div>
-                    }
+                    
                     <div className="mb-3">
                         <label htmlFor="status" className="form-label">Role</label>
                         <div className="form-group">
-                            <select className="form-select" id='state' name='key_r' aria-label="Default select example" onChange={ e => handleChange(e, 'customer') } value={data.customer ? data.customer.key_r : ''}>
+                            <select className="form-select w-auto" id='state' name='key_r' aria-label="Default select example" onChange={ e => handleChange(e, 'customer') } value={data.customer ? data.customer.key_r : ''}>
                             { data && data.roles.map((role, key) => {
                                 return (
                             <option value={role.key_r} key={key}>{role.name_r}</option>
@@ -248,41 +248,50 @@ export default function CustomerPage() {
                         </select>
                         </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="address" className="form-label">Adresse</label>
-                        <input type="text" name='address_u' className="form-control" id="address" placeholder="Adresse" value={data.customer ? data.customer.address_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="zipcode" className="form-label">Code postale</label>
-                        <input type="text" name='zipCode_u' className="form-control" id="zipcode" placeholder="Code Postale" value={data.customer ? data.customer.zipCode_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="country" className="form-label">Pays</label>
-                        <input type="text" name='country_u' className="form-control" id="country" placeholder="Pays" value={data.customer ? data.customer.city_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                    <div className=" d-flex flex-wrap">
+                        <div className="mb-3 me-3">
+                            <label htmlFor="address" className="form-label">Adresse</label>
+                            <input type="text" name='address_u' className="form-control" id="address" placeholder="Adresse" value={data.customer ? data.customer.address_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        </div>
+                        <div className="mb-3 me-3">
+                            <label htmlFor="zipcode" className="form-label">Code postale</label>
+                            <input type="text" name='zipCode_u' className="form-control" id="zipcode" placeholder="Code Postale" value={data.customer ? data.customer.zipCode_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="country" className="form-label">Ville</label>
+                            <input type="text" name='city_u' className="form-control" id="country" placeholder="Pays" value={data.customer ? data.customer.city_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="phone" className="form-label">Téléphone</label>
-                        <input type="tel" name='phone_u' className="form-control" id="phone" placeholder="Adresse mail" value={data.customer ? data.customer.phone_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        <input type="tel" name='phone_u' className="form-control w-auto" id="phone" placeholder="Numéro" value={data.customer ? data.customer.phone_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Adresse mail</label>
-                        <input type="text" name='email' className="form-control" id="email" placeholder="Adresse mail" value={data.customer ? data.customer.email : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        <input type="text" name='email' className="form-control w-auto" id="email" placeholder="Adresse mail" value={data.customer ? data.customer.email : ''} onChange={ e => handleChange(e, 'customer')}></input>
                     </div>
-                    
+                    {data.customer ? 
+                    <div>
+                        <p>Création le {displayDate(data.customer.createdAt)} à {displayTime(data.customer.createdAt)}</p>
+                        <p>Dernière modification le {displayDate(data.customer.updatedAt)} à {displayTime(data.customer.updatedAt)}</p>
+                    </div>
+                    : '' }
                 </div>
                 )}
-                {category === 'company' && (
+                {category === 'company' && 
                 <div className="card p-4" id='order'>
-                    <div className="mb-3">
-                        <label htmlFor="comanyName" className="form-label">Nom de l'entreprise</label>
-                        <input type="text" name='company_u' className="form-control" id="comanyName" placeholder="Nom de l'entreprise" value={data.customer ? data.customer.company_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="siret" className="form-label">Siret de l'entreprise</label>
-                        <input type="text" name='siret_u' className="form-control" id="siret" placeholder="Siret de l'entreprise" value={data.customer ? data.customer.siret_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                    <div className=" d-flex flex-wrap">
+                        <div className="mb-3  me-3">
+                            <label htmlFor="comanyName" className="form-label">Nom de l'entreprise</label>
+                            <input type="text" name='company_u' className="form-control" id="comanyName" placeholder="Nom de l'entreprise" value={data.customer ? data.customer.company_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        </div>
+                        <div className="mb-3 me-3">
+                            <label htmlFor="siret" className="form-label">Siret de l'entreprise</label>
+                            <input type="text" name='siret_u' className="form-control" id="siret" placeholder="Siret de l'entreprise" value={data.customer ? data.customer.siret_u : ''} onChange={ e => handleChange(e, 'customer')}></input>
+                        </div>
                     </div>
                 </div>
-                )}
+                }
                 {category === 'order' && (
                 <div className="card p-4" id='order'>
                     <div className="mb-3">
@@ -300,15 +309,10 @@ export default function CustomerPage() {
                 </div>
                 )}
                 <div className="my-3 d-flex justify-content-between">
-                    {data.customer ? 
-                    <div>
-                        <p>Création le {displayDate(data.customer.createdAt)} à {displayTime(data.customer.createdAt)}</p>
-                        <p>Dernière modification le {displayDate(data.customer.updatedAt)} à {displayTime(data.customer.updatedAt)}</p>
-                    </div>
-                    : '' }
-                    <div>
-                        <button type="submit" className="btn btn-primary">Enregistrer</button>
-                    </div>
+                    {data.customer && 
+                        <DeleteButton text={"Supprimer l'utilisateur"} id={data.customer._id}  target={'user'} />
+                    }
+                    <button type="submit" className="btn btn-primary ms-auto">Enregistrer</button>
                 </div>
             </form>
         </div>

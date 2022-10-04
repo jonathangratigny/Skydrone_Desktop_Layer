@@ -67,10 +67,34 @@ export default function DeleteButton ({target, id, text}) {
 
     }
 
+    const deleteOrder = (id) => {
+        const deleteToast = toast.loading("Suppression...")
+        fetch('https://skydrone-api.herokuapp.com/api/v1/orders/' + id, {
+            method: 'DELETE',
+            headers: {'Authorization': 'Bearer ' + user.token}
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.info('Success', data)
+            toast.update(deleteToast, { render: "Supprimé avec succès", type: "success", isLoading: false, autoClose: 2000 });
+            setTimeout(() => {
+                window.location.href = '../products'
+            }, 2000)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            toast.update(deleteToast, { render: "Errer", type: "error", isLoading: false, autoClose: 2000, });
+        });
+
+    }
+
     const goodTarget = () => {
         switch (target) {
             case 'drone':
                 deleteDrone(id)
+                break;
+            case 'order':
+                deleteOrder(id)
                 break;
             default:
                 break;
